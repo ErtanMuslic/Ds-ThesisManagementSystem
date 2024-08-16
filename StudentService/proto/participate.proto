@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./proto;proto";
+
+//protoc --go_out=. --go-grpc_out=. proto/assess_student.proto
+
+message Thesis {
+  int32 thesis_id = 1;
+  string title = 2;
+  string description = 3;
+  string student_id = 4;
+  string token = 5;
+}
+
+message PartitipationResponse {
+  bool approved = 1;
+}
+
+service ParticipateService {
+  rpc Participate(Thesis) returns (PartitipationResponse);
+}

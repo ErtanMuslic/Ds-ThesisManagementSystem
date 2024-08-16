@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    # nginx.ingress.kubernetes.io/auth-signin: "http://acme.com/api/Professor/Login" # URL to redirect to for sign in
+    # nginx.ingress.kubernetes.io/auth-url: "http://acme.com/api/Professor/Authorize" # URL to your nannies auth endpoint
+    # nginx.ingress.kubernetes.io/auth-response-headers: "Authorization" # Forward the Authorization header
+    # nginx.ingress.kubernetes.io/proxy-connect-timeout: "600s"
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "600s"
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "600s"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: acme.com
+      http:
+        paths:
+          - path: /api/Professor
+            pathType: Prefix
+            backend:
+              service:
+                name: professorservice-clusterip-srv
+                port:
+                  number: 8080
+          - path: /api/Thesis
+            pathType: Prefix
+            backend:
+              service:
+                name: thesiservice-clusterip-srv
+                port:
+                  number: 8080
+          - path: /api/Student
+            pathType: Prefix
+            backend:
+              service:
+                name: studentservice-clusterip-srv
+                port:
+                  number: 8080

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thesiservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thesiservice
+  template:
+    metadata:
+      labels:
+        app: thesiservice
+    spec:
+      containers:
+        - name: thesiservice
+          image: ertanmuslic/thesiservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thesiservice-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: thesiservice
+  ports:
+  - name: thesiservice
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  - name: thesiservicegrpc
+    protocol: TCP
+    port: 666
+    targetPort: 666

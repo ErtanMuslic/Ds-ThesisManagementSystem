@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: professorservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: professorservice
+  template:
+    metadata:
+      labels:
+        app: professorservice
+    spec:
+      containers:
+        - name: professorservice
+          image: ertanmuslic/professorservice:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Host=postgres-service;Port=5432;Database=thesis_db;Username=admin;Password=admin"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: professorservice-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: professorservice
+  ports:
+    - name: professorservice
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

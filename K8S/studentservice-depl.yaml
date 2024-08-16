@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studentservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: studentservice
+  template:
+    metadata:
+      labels:
+        app: studentservice
+    spec:
+      containers:
+        - name: studentservice
+          image: ertanmuslic/studentservice:latest
+          env:
+            - name: MONGODB_CONNECTION_STRING
+              value: "mongodb://mongodb-clusterip-srv:27017"
+            - name: JWT_KEY
+              value: "YcxjOMewdFfeZFQm5iGAYxTjR23Z93rLbyZucty3"
+            - name: JWT_ISSUER
+              value: "http://professorservice-clusterip-srv:8080"
+            - name: JWT_AUDIENCES
+              value: "http://professorservice-clusterip-srv:8080,http://thesiservice-clusterip-srv:8080,http://studentservice-clusterip-srv:8080"
+            - name: STUDENTSERVICE_BASE_URL
+              value: "http://studentservice-clusterip-srv:8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: studentservice-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: studentservice
+  ports:
+  - name: studentservice
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
