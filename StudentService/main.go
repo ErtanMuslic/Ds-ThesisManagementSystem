@@ -36,10 +36,10 @@ func main() {
 	}()
 
 	//DEV
-	//grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS")
+	grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS")
 
 	//PROD
-	grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS_PROD")
+	//grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS_PROD")
 
 	conn, err := grpc.Dial(grpcAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -50,11 +50,11 @@ func main() {
 		client := pb.NewParticipateServiceClient(conn)
 
 		thesis := &pb.Thesis{ThesisId: 4, Title: "Sample Thesis",StudentId: "1"}
-		bookList, err := client.Participate(context.Background(), thesis)
+		result, err := client.Participate(context.Background(), thesis)
 		if err != nil {
 			log.Printf("Error calling Participate: %v", err)
 		} else {
-			log.Printf("Book list: %v", bookList)
+			log.Printf("Result: %v", result)
 		}
 	}
 

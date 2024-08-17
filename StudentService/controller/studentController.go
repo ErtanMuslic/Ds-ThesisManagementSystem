@@ -184,10 +184,10 @@ func ApplyForThesis(c *gin.Context) {
 
 	// Connect to gRPC server
 	//DEV:
-	//grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS")
+	grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS")
 
 	//PROD:
-	grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS_PROD")
+	//grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS_PROD")
 	conn, err := grpc.Dial(grpcAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Printf("Failed to connect to gRPC server: %v", err)

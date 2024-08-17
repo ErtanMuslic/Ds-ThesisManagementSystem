@@ -17,29 +17,6 @@ namespace ProfessorService.Controllers
         {
             _professorRepository = professorRepository;
         }
-
-
-        [HttpGet("Authorize")]
-        public IResult Auth()
-        {
-            try
-            {
-                if (!HttpContext.User.Identity?.IsAuthenticated ?? false)
-                {
-                    Console.WriteLine("--> Nginx authorization FAILED... controller");
-                    return Results.Unauthorized();
-                }
-
-                Console.WriteLine("--> Nginx authorization successful... controller");
-                return Results.Ok();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-                return Results.Problem("Internal Server Error");
-            }
-        }
-
         [HttpGet("All")]
         public ActionResult<IEnumerable<Professor>> GetProfessors()
         {
